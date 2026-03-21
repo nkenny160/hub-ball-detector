@@ -1,7 +1,5 @@
-#include "ctre/phoenix6/TalonFX.hpp"
 #include "ctre/phoenix6/CANrange.hpp"
 #include "RobotBase.hpp"
-#include "Joystick.hpp"
 #include <iostream>
 
 using namespace ctre::phoenix6;
