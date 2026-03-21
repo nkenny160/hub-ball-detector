@@ -1,5 +1,7 @@
 #include "ctre/phoenix6/CANrange.hpp"
 #include "RobotBase.hpp"
+#include "lcd_i2c.hpp"
+#include <cstdio>
 #include <iostream>
 
 using namespace ctre::phoenix6;
@@ -19,7 +21,14 @@ private:
 
 
     /* CANrange sensor on device ID 4 */
-    hardware::CANrange canrange{4, CANBUS};
+    
+    hardware::CANrange canrange1{1, CANBUS};
+    hardware::CANrange canrange2{2, CANBUS};
+    hardware::CANrange canrange3{3, CANBUS};
+    hardware::CANrange canrange4{4, CANBUS};
+
+    /* I2C LCD display (0x27 = default QA Pass backpack address) */
+    LCD_I2C lcd{0x27, "/dev/i2c-1"};
 
     /* detection counter and edge-detection state */
     int detectionCount{0};
@@ -53,14 +62,34 @@ void Robot::RobotPeriodic()
 {
 
     /* read distance from CANrange (meters) */
-    double distance = canrange.GetDistance().GetValueAsDouble();
-    bool isDetected = distance < DETECT_THRESHOLD_M;
+    
+    double distance1 = canrange1.GetDistance().GetValueAsDouble();
+    double distance2 = canrange2.GetDistance().GetValueAsDouble();
+    double distance3 = canrange3.GetDistance().GetValueAsDouble();
+    double distance4 = canrange4.GetDistance().GetValueAsDouble();
+    
+    bool isDetected1 = distance1 < DETECT_THRESHOLD_M;
+    bool isDetected2 = distance2 < DETECT_THRESHOLD_M;
+    bool isDetected3 = distance3 < DETECT_THRESHOLD_M;
+    bool isDetected4 = distance4 < DETECT_THRESHOLD_M;
 
-    /* increment counter and print on the rising edge of a detection */
+
+    bool isDetected = isDetected1 || isDetected2 || isDetected3 || isDetected4;
+
+    /* increment counter on the rising edge of a detection */
     if (isDetected && !wasDetected) {
         ++detectionCount;
-        std::cout << "Ball detected! Count: " << detectionCount
-                  << "  (distance: " << distance << " m)\n";
+        std::cout << "Ball detected! Count: " << detectionCount << "\n";
+
+        /* update LCD: line 0 = label, line 1 = count */
+        if (lcd.ok()) {
+            char buf[17];
+            lcd.setCursor(0, 0);
+            lcd.print("  Ball Counter  ");
+            lcd.setCursor(0, 1);
+            std::snprintf(buf, sizeof(buf), "Count: %-9d", detectionCount);
+            lcd.print(buf);
+        }
     }
     wasDetected = isDetected;
 }
