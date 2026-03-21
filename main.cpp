@@ -51,8 +51,6 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic()
 {
-    /* periodically check that the joystick is still good */
-    joy.Periodic();
 
     /* read distance from CANrange (meters) */
     double distance = canrange.GetDistance().GetValueAsDouble();
