@@ -1,6 +1,6 @@
 #include "ctre/phoenix6/CANrange.hpp"
 #include "RobotBase.hpp"
-#include "lcd_i2c.hpp"
+#include "oled_i2c.hpp"
 #include <cstdio>
 #include <iostream>
 
@@ -27,8 +27,8 @@ private:
     hardware::CANrange canrange3{3, CANBUS};
     hardware::CANrange canrange4{4, CANBUS};
 
-    /* I2C LCD display (0x27 = default QA Pass backpack address) */
-    LCD_I2C lcd{0x27, "/dev/i2c-1"};
+    /* SSD1306 128x64 OLED over I2C (default address 0x3C) */
+    OLED_I2C oled{0x3C, "/dev/i2c-1"};
 
     /* detection counter and edge-detection state */
     int detectionCount{0};
@@ -81,17 +81,11 @@ void Robot::RobotPeriodic()
         ++detectionCount;
         std::cout << "Ball detected! Count: " << detectionCount << "\n";
 
-        /* update LCD: line 0 = label, line 1 = count */
-        
-    }
-    if (lcd.ok()) {
-            char buf[17];
-            lcd.setCursor(0, 0);
-            lcd.print("  Ball Counter  ");
-            lcd.setCursor(0, 1);
-            std::snprintf(buf, sizeof(buf), "Count: %-9d", detectionCount);
-            lcd.print(buf);
+        /* update OLED display */
+        if (oled.ok()) {
+            oled.showCount(detectionCount);
         }
+    }
     wasDetected = isDetected;
 }
 
