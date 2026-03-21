@@ -82,7 +82,9 @@ void Robot::RobotPeriodic()
         std::cout << "Ball detected! Count: " << detectionCount << "\n";
 
         /* update LCD: line 0 = label, line 1 = count */
-        if (lcd.ok()) {
+        
+    }
+    if (lcd.ok()) {
             char buf[17];
             lcd.setCursor(0, 0);
             lcd.print("  Ball Counter  ");
@@ -90,7 +92,6 @@ void Robot::RobotPeriodic()
             std::snprintf(buf, sizeof(buf), "Count: %-9d", detectionCount);
             lcd.print(buf);
         }
-    }
     wasDetected = isDetected;
 }
 
