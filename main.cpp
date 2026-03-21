@@ -72,10 +72,6 @@ void Robot::RobotPeriodic()
  */
 bool Robot::IsEnabled()
 {
-    /* enable while joystick is an Xbox controller (6 axes),
-     * and we are holding the right bumper */
-    if (joy.GetNumAxes() < 6) return false;
-    return joy.GetButton(5); // SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
 }
 
 /**
