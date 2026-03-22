@@ -25,14 +25,16 @@ private:
     hardware::CANrange canrange1{1, CANBUS};
     hardware::CANrange canrange2{2, CANBUS};
     hardware::CANrange canrange3{3, CANBUS};
-    hardware::CANrange canrange4{4, CANBUS};
 
     /* SSD1306 128x64 OLED over I2C (default address 0x3C) */
     OLED_I2C oled{0x3C, "/dev/i2c-1"};
 
     /* detection counter and edge-detection state */
     int detectionCount{0};
-    bool wasDetected{false};
+
+    bool wasDetected1{false};
+    bool wasDetected2{false};
+    bool wasDetected3{false};
 
 
 public:
@@ -66,18 +68,13 @@ void Robot::RobotPeriodic()
     double distance1 = canrange1.GetDistance().GetValueAsDouble();
     double distance2 = canrange2.GetDistance().GetValueAsDouble();
     double distance3 = canrange3.GetDistance().GetValueAsDouble();
-    double distance4 = canrange4.GetDistance().GetValueAsDouble();
     
     bool isDetected1 = distance1 < DETECT_THRESHOLD_M;
     bool isDetected2 = distance2 < DETECT_THRESHOLD_M;
     bool isDetected3 = distance3 < DETECT_THRESHOLD_M;
-    bool isDetected4 = distance4 < DETECT_THRESHOLD_M;
-
-
-    bool isDetected = isDetected1 || isDetected2 || isDetected3 || isDetected4;
 
     /* increment counter on the rising edge of a detection */
-    if (isDetected && !wasDetected) {
+    if (isDetected1 && !wasDetected1) {
         ++detectionCount;
         std::cout << "Ball detected! Count: " << detectionCount << "\n";
 
@@ -86,9 +83,29 @@ void Robot::RobotPeriodic()
             oled.showCount(detectionCount);
         }
     }
-    wasDetected = isDetected;
-}
+    if (isDetected2 && !wasDetecte2) {
+        ++detectionCount;
+        std::cout << "Ball detected! Count: " << detectionCount << "\n";
 
+        /* update OLED display */
+        if (oled.ok()) {
+            oled.showCount(detectionCount);
+        }
+    }
+    if (isDetected3 && !wasDetected3) {
+        ++detectionCount;
+        std::cout << "Ball detected! Count: " << detectionCount << "\n";
+
+        /* update OLED display */
+        if (oled.ok()) {
+            oled.showCount(detectionCount);
+        }
+    }
+    wasDetected1 = isDetected1;
+    wasDetected2 = isDetected2;
+    wasDetected3 = isDetected3;
+}
+`
 /**
  * Returns whether the robot should be enabled.
  */
