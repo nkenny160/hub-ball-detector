@@ -7,7 +7,7 @@
 using namespace ctre::phoenix6;
 
 /* Distance (in meters) below which the CANrange triggers a detection */
-static constexpr double DETECT_THRESHOLD_M = 0.02;
+static constexpr double DETECT_THRESHOLD_M = 0.15;
 
 /**
  * This is the main robot. Put all actuators, sensors,
