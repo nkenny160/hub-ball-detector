@@ -76,7 +76,7 @@ void Robot::RobotPeriodic()
     /* increment counter on the rising edge of a detection */
     if (isDetected1 && !wasDetected1) {
         ++detectionCount;
-        std::cout << "Ball detected! Count: " << detectionCount << "\n";
+        std::cout << "Ball detected 1! Count: " << detectionCount << "\n";
 
         /* update OLED display */
         if (oled.ok()) {
@@ -85,7 +85,7 @@ void Robot::RobotPeriodic()
     }
     if (isDetected2 && !wasDetected2) {
         ++detectionCount;
-        std::cout << "Ball detected! Count: " << detectionCount << "\n";
+        std::cout << "Ball detected 2! Count: " << detectionCount << "\n";
 
         /* update OLED display */
         if (oled.ok()) {
@@ -94,7 +94,7 @@ void Robot::RobotPeriodic()
     }
     if (isDetected3 && !wasDetected3) {
         ++detectionCount;
-        std::cout << "Ball detected! Count: " << detectionCount << "\n";
+        std::cout << "Ball detected 3! Count: " << detectionCount << "\n";
 
         /* update OLED display */
         if (oled.ok()) {
