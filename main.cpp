@@ -83,7 +83,7 @@ void Robot::RobotPeriodic()
             oled.showCount(detectionCount);
         }
     }
-    if (isDetected2 && !wasDetecte2) {
+    if (isDetected2 && !wasDetected2) {
         ++detectionCount;
         std::cout << "Ball detected! Count: " << detectionCount << "\n";
 
@@ -105,7 +105,6 @@ void Robot::RobotPeriodic()
     wasDetected2 = isDetected2;
     wasDetected3 = isDetected3;
 }
-`
 /**
  * Returns whether the robot should be enabled.
  */
